@@ -1,0 +1,24 @@
+{
+    "banners" : [
+        {
+            "id" : 1,
+            "image" : "https://www.liquidesign.co.uk/wp-content/uploads/2016/10/artisan-coffee-shop-putney-3-1920x1080.jpg",
+            "alt" : "content seo"
+        },
+        {
+            "id" : 2,
+            "image" : "https://www.liquidesign.co.uk/wp-content/uploads/2016/10/brew92-coffee-shop-design-saudi-arabia-18-1920x1080.jpg",
+            "alt" : "content seo asds"
+        },
+        {
+            "id" : 3,
+            "image" : "https://i.pinimg.com/originals/58/1b/63/581b634953d26dcb0805c4b26d95cbb4.jpg",
+            "alt" : "content seo asd"
+        },
+        {
+            "id" : 4,
+            "image" : "https://www.liquidesign.co.uk/wp-content/uploads/2017/04/brew92-coffee-shop-design-saudi-arabia-12-1920x1080.jpg",
+            "alt" : "content seo"
+        }
+    ]
+}
