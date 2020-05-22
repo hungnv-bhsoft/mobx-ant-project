@@ -20,5 +20,89 @@
             "image" : "https://www.liquidesign.co.uk/wp-content/uploads/2017/04/brew92-coffee-shop-design-saudi-arabia-12-1920x1080.jpg",
             "alt" : "content seo"
         }
+    ],
+    "products" : [
+        {
+            "id" : 1,
+            "name" : "Orange Drink",
+            "categories": ["Fruit juice"],
+            "images" : [
+                "https://breadboozebacon.com/wp-content/uploads/2018/07/Sparkling-Blood-Orange-Cocktail-10-200x200.jpg",
+                "https://www.thecookierookie.com/wp-content/uploads/2019/05/Apple-Pie-Punch-800px-The-Cookie-Rookie-6-200x200.jpg",
+                "https://www.peoplespharmacy.com/wp-content/uploads/Orange-And-Grapefruit-juice-200x200.jpg"
+            ],
+            "price" : 2,
+            "description" : "lorem lorem lorem lorem",
+            "sold" : 50
+        },
+        {
+            "id" : 2,
+            "name" : "Deep Blue",
+            "categories": ["Soda"],
+            "images" : [
+                "https://4.bp.blogspot.com/-B340IvjJBQ8/W3-0GaMnlaI/AAAAAAAAGwg/wCWfrQzjXdYzKrkBaWpHbfOzl33xvRHRgCLcBGAs/s1600/deep-blue.jpg",
+                "https://d1sag4ddilekf6.cloudfront.net/item/5-CYMWVPUVA4N2J2-CYMWVPVEAXWKJN/photos/900336ac3dea41eca9528df0b6fedd76_1565946424777071423.jpg",
+                "https://images.happycow.net/venues/200x200/91/95/hcmp91953_341921.jpeg"
+            ],
+            "price" : 2,
+            "description" : "lorem lorem lorem lorem",
+            "sold" : 50
+        },
+        {
+            "id" : 3,
+            "name" : "Matcha Ice",
+            "categories": ["ice blended"],
+            "images" : [
+                "https://d1sag4ddilekf6.cloudfront.net/item/5-CYVKTCNYNRC2EN-CYVKTCNYWCDHJJ/photos/d40e8048ae3c4bb9946e5828d62c1960_1566113668294312536.jpg",
+                "https://hw-media.herworld.com/public/matcha%20ice%20cream%20cup%20thumbnail.jpg",
+                "https://dtlscuh0h90jk.cloudfront.net/item/photos/VNGFVN00000273/1542700116070726333_5ad74c7a7ebb40f0924e50edb1bb3776.jpg"
+            ],
+            "price" : 5,
+            "description" : "lorem lorem lorem lorem",
+            "sold" : 50
+        },
+        {
+            "id" : 4,
+            "name" : "Coffee Milk",
+            "categories": ["Coffee"],
+            "images" : [
+                "https://d1sag4ddilekf6.cloudfront.net/item/VNGFVN00000a0r1545055136962215096/photos/17_ead1cb4ad22b4882a321059b16611ab0_1555481923496703621.jpg",
+                "https://d1sag4ddilekf6.cloudfront.net/item/VNGFVN00000a0r1545055134929983023/photos/6_d3f5c46b1f8949d0b8f29f54c00252ef_1555481921965198624.jpg",
+                "https://d1sag4ddilekf6.cloudfront.net/item/5-CYUGMELBVKDFNE-CYUGMELCTXD3R2/photos/5ce2d90bb5c74a90ad91028603cdc295_1562659142889811663.jpg"
+            ],
+            "price" : 10,
+            "description" : "lorem lorem lorem lorem",
+            "sold" : 50
+        }
+    ],
+    "categories" : [
+        {
+            "id" : 1,
+            "name" : "Soda"
+        },
+        {
+            "id" : 2,
+            "name" : "Bread"
+        },
+        {
+            "id" : 3,
+            "name" : "Smoothie"
+        },
+        {
+            "id" : 4,
+            "name" : "Fruit juice"
+        },
+        {
+            "id" : 5,
+            "name" : "Coffee"
+        },
+        {
+            "id" : 6,
+            "name" :"creams"
+        },
+        {
+            "id" : 7,
+            "name" : "ice blended"
+        }
     ]
 }

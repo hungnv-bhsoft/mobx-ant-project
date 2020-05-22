@@ -1,28 +1,29 @@
 import { observable, computed ,decorate, action, toJS } from 'mobx';
+import coffeeAPI from '../api/config';
+
 
 export class ProductStore {
-    products = [
-        {
-            id : 1,
-            name : 'banana drink',
-            price : 2,
-            description : 'lorem lorem lorem lorem',
-            soldOut : 50
-        },
-        {
-            id : 2,
-            name : 'capuchino drink',
-            price : 10,
-            description : 'lorem lorem lorem lorem',
-            soldOut : 90
+    loading = false;
+    products = [];
+    getProducts = async () => {
+        try {
+            this.loading = true;
+            const res = await coffeeAPI.get('/products');
+            this.products = res.data;
+            this.loading = false;
+            console.log('LOAD PRODUCTS SUCCESS',res.data);
+        } catch (err) {
+            console.log(err);
         }
-    ];
+    }
+
     addProduct(obj) {
         return this.products.push(obj);
-    };
-    incPrice(id) {
+    }
+    incPrice = (id) => {
         const product = this.products.find( pro => pro.id == id );
         return product.price++;
+        // console.log(id);
     }
 
     get listProduct() {
@@ -30,7 +31,9 @@ export class ProductStore {
     }
 }
 decorate(ProductStore,{
+    loading : observable,
     products : observable,
-    addProduct : action,
+    getProducts : action,
+    incPrice : action,
     listProduct : computed
 });

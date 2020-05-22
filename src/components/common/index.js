@@ -21,3 +21,9 @@ export const ContainerWrapper = styled.div`
     max-width: 113rem;
     margin: 0 auto;
 `;
+
+//Heading
+export const Heading = styled.h1`
+    text-align: center;
+    margin-top: 2rem;
+`;
