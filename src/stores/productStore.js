@@ -25,15 +25,15 @@ export class ProductStore {
         return product.price++;
         // console.log(id);
     }
-
-    get listProduct() {
-        return this.products
+    convertVND = (currency) => {
+        return this.products.map( pro => pro.price  * currency );
     }
+
 }
 decorate(ProductStore,{
     loading : observable,
     products : observable,
     getProducts : action,
     incPrice : action,
-    listProduct : computed
+    convertVND : action
 });

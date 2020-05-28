@@ -73,6 +73,19 @@
             "price" : 10,
             "description" : "lorem lorem lorem lorem",
             "sold" : 50
+        },
+        {
+            "id" : 5,
+            "name" : "Alala Milk",
+            "categories": ["Coffee"],
+            "images" : [
+                "https://d1sag4ddilekf6.cloudfront.net/item/VNGFVN00000a0r1545055136962215096/photos/17_ead1cb4ad22b4882a321059b16611ab0_1555481923496703621.jpg",
+                "https://d1sag4ddilekf6.cloudfront.net/item/VNGFVN00000a0r1545055134929983023/photos/6_d3f5c46b1f8949d0b8f29f54c00252ef_1555481921965198624.jpg",
+                "https://d1sag4ddilekf6.cloudfront.net/item/5-CYUGMELBVKDFNE-CYUGMELCTXD3R2/photos/5ce2d90bb5c74a90ad91028603cdc295_1562659142889811663.jpg"
+            ],
+            "price" : 23,
+            "description" : "lorem lorem lorem lorem",
+            "sold" : 50
         }
     ],
     "categories" : [

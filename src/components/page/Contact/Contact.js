@@ -1,10 +1,12 @@
 import React from 'react';
+import Content from '../../layout/Content';
+
 
 const Contact = () => {
     return (
-        <div>
+        <Content>
             Contact
-        </div>
+        </Content>
     )
 }
 

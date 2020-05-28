@@ -11,6 +11,9 @@
     "antd": "^4.2.4",
     "axios": "^0.19.2",
     "craco-less": "^1.16.0",
+    "formik": "^2.1.4",
+    "formik-persist": "^1.1.0",
+    "history": "^4.10.1",
     "mobx": "^5.15.4",
     "mobx-react": "^6.2.2",
     "react": "^16.13.1",
@@ -19,7 +22,8 @@
     "react-scripts": "3.4.1",
     "react-slick": "^0.26.1",
     "slick-carousel": "^1.8.1",
-    "styled-components": "^5.1.0"
+    "styled-components": "^5.1.0",
+    "yup": "^0.29.0"
   },
   "scripts": {
     "start": "craco start",

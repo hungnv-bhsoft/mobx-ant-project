@@ -2,14 +2,13 @@ import React from 'react';
 import './App.less';
 // react router
 import {
-  BrowserRouter as Router,
+  Router,
   Switch,
-  Route,
-  Link
+  Route
 } from 'react-router-dom';
 //layout
-import Header from './components/layout/Header';
-import Main from './components/layout/Main';
+// import Header from './components/layout/Header';
+// import Main from './components/layout/Main';
 //page
 import Home from './components/page/Home';
 import Products from './components/page/Products';
@@ -17,62 +16,21 @@ import ProductDetail from './components/page/ProductDetail';
 import Contact from './components/page/Contact';
 import About from './components/page/About';
 import NotFound from './components/page/NotFound';
-//logo
-import Logo from './components/logo/Logo';
-import CoffeeImg from './assets/images/coffee-shop.png';
+import Dashboard from './components/page/DashBoard';
 
-import Nav from './components/navigation/Nav';
-import List from './components/list/List';
-import Item from './components/list/Item';
-import { BoxWrapper, BoxItem } from './components/common';
-import styled from 'styled-components';
+// import styled from 'styled-components';
+//priveroute
+import ProtectedRoute from './components/PrivateRoute/ProtectedRoute';
+import AdminLogin from './components/page/AdminLogin';
 
+import history from './utils/history';
 
-
-const LinkStyle = styled(Link)`
-    color : ${ ({ theme }) => theme.colors.textDark };
-`;
 
 const App = () => {
 
   return (
-
-    <Router>
-    <div>
-        <Header>
-          <BoxWrapper
-            padding={`0rem 5rem`}
-            alignItems="center"
-            justifyContent="space-between">
-            <BoxItem style={{ width: '10rem' }}>
-                <LinkStyle to="/">
-                  <Logo src={CoffeeImg} alt={`my logo`} />
-                </LinkStyle>
-            </BoxItem>
-            <BoxItem>
-              <Nav>
-                  <List
-                      flexDirection
-                      padding={`1rem`}
-                    >
-                    <Item>
-                      <LinkStyle to="/">Home</LinkStyle>
-                    </Item>
-                    <Item>
-                      <LinkStyle to="/products">Products</LinkStyle>
-                    </Item>
-                    <Item>
-                      <LinkStyle to="/about">About Us</LinkStyle>
-                    </Item>
-                    <Item>
-                      <LinkStyle to="/contact">Contact Us</LinkStyle>
-                    </Item>
-                  </List>
-              </Nav>
-            </BoxItem>
-          </BoxWrapper>
-        </Header>
-        <Main>
+    <>
+    <Router history={history}>
           <Switch>
               <Route exact path="/">
                 <Home />
@@ -89,13 +47,18 @@ const App = () => {
               <Route path="/contact">
                 <Contact />
               </Route>
+              <ProtectedRoute path="/admin">
+                <Dashboard />
+              </ProtectedRoute>
+              <Route path="/adminlogin">
+                <AdminLogin />
+              </Route>
               <Route path="*">
                 <NotFound />
               </Route>
             </Switch>
-        </Main>
-    </div>
     </Router>
+    </>
   );
 
 }

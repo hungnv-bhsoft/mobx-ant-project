@@ -1,10 +1,12 @@
-import React from 'react'
+import React from 'react';
+import Content from '../../layout/Content';
+
 
 const Products = () => {
     return (
-        <div>
+        <Content>
             Products
-        </div>
+        </Content>
     )
 }
 

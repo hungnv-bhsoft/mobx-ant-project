@@ -20,6 +20,7 @@ export const BoxItem = styled.div`
 export const ContainerWrapper = styled.div`
     max-width: 113rem;
     margin: 0 auto;
+    padding: 0 1.5rem;
 `;
 
 //Heading
