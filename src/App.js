@@ -16,13 +16,15 @@ import ProductDetail from './components/page/ProductDetail';
 import Contact from './components/page/Contact';
 import About from './components/page/About';
 import NotFound from './components/page/NotFound';
-import Dashboard from './components/page/DashBoard';
+import HomeAdmin from './components/page/DashBoard/HomeAdmin';
 
 // import styled from 'styled-components';
 //priveroute
 import ProtectedRoute from './components/PrivateRoute/ProtectedRoute';
 import AdminLogin from './components/page/AdminLogin';
-
+import ManageCategories from './components/page/DashBoard/ManageCategories';
+import ManageProduct from './components/page/DashBoard/ManageProduct';
+import CreateProduct from './components/page/DashBoard/ManageProduct/Create';
 import history from './utils/history';
 
 
@@ -47,12 +49,23 @@ const App = () => {
               <Route path="/contact">
                 <Contact />
               </Route>
-              <ProtectedRoute path="/admin">
-                <Dashboard />
-              </ProtectedRoute>
               <Route path="/adminlogin">
                 <AdminLogin />
               </Route>
+              {/* Privated */}
+              <ProtectedRoute path="/dashboard">
+                <HomeAdmin />
+              </ProtectedRoute>
+              <ProtectedRoute path="/setcategories">
+                <ManageCategories />
+              </ProtectedRoute>
+              <ProtectedRoute path="/getproducts">
+                <ManageProduct />
+              </ProtectedRoute>
+              <ProtectedRoute path="/createproduct">
+                <CreateProduct />
+              </ProtectedRoute>
+              {/* Not page */}
               <Route path="*">
                 <NotFound />
               </Route>

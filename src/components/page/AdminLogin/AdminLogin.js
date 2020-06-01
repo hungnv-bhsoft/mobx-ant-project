@@ -5,7 +5,8 @@ import { Persist } from 'formik-persist';
 import * as Yup from 'yup';
 import { observer } from 'mobx-react';
 import { useStores } from '../../../hooks/useStores';
-// import history from '../../../utils/history';
+import history from '../../../utils/history';
+import { toJS } from 'mobx';
 
 // import { toJS } from 'mobx';
 
@@ -55,6 +56,12 @@ const AdminLogin = observer(() => {
         const { userStore } = useStores();
         React.useEffect(() => {
             userStore.checkAdmin();
+            // console.log(toJS(userStore.jwToken));
+            if(userStore.jwToken) {
+                history.push('/dashboard');
+            } else {
+                history.push('/adminlogin');
+            }
         },[]);
         return (
             <FormWrapper>
@@ -69,7 +76,7 @@ const AdminLogin = observer(() => {
                             .required('Required')
                 })}
                 onSubmit={(values, { setSubmitting }) => {
-                    console.log(values);
+                    // console.log(values);
                     userStore.login(values);
                     setSubmitting(false);
                 }}

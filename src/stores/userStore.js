@@ -1,11 +1,10 @@
-import { observable, computed ,decorate, action, toJS } from 'mobx';
+import { observable ,decorate, action, toJS } from 'mobx';
 import axios from 'axios';
 import history from '../utils/history';
 
 
 export class UserStore {
     loading = false;
-    user = null;
     jwToken = null;
     errors = null;
     isLogged = false;
@@ -17,10 +16,8 @@ export class UserStore {
             });
             const userRole = res.data.user;
             if(userRole.blocked === false && userRole.role.type === 'manager' ) {
-                this.user = res.data.user;
-                window.sessionStorage.setItem('admin',JSON.stringify(res.data.jwt));
-                this.isLogged = true;
-                history.push('/admin');
+                window.sessionStorage.setItem('admin',JSON.stringify(res.data));
+                history.push('/dashboard');
             } else {
                 this.errors = 'You can not access into admin!';
             };
@@ -32,15 +29,10 @@ export class UserStore {
     checkAdmin = () => {
         const admin = JSON.parse(window.sessionStorage.getItem('admin'));
         this.jwToken = admin || null;
-        if(this.jwToken) {
-            history.push('/admin');
-        } else {
-            history.push('/adminlogin');
-        }
     };
     logout = () => {
         window.sessionStorage.removeItem('admin');
-        this.isLogged = false;
+        // this.isLogged = false;
         history.push('/adminlogin');
     };
 
@@ -50,9 +42,8 @@ export class UserStore {
 }
 decorate(UserStore,{
     loading : observable,
-    user: observable,
+    jwToken : observable,
     errors : observable,
-    adminLogged : observable,
     isLogged : observable,
     checkAdmin : action,
     login : action,

@@ -1,16 +1,13 @@
 import React from 'react';
 import {Route , Redirect} from 'react-router-dom';
-import { observer } from 'mobx-react';
-import { useStores } from '../../hooks/useStores';
 
 
-const ProtectedRoute = observer(({ children,...rest }) => {
-    const { userStore } = useStores();
+const ProtectedRoute = ({ children,...rest }) => {
     return (
         <Route
         {...rest}
         render={({ location }) =>
-        userStore.jwToken !== null ? (
+        sessionStorage.getItem('admin') ? (
             children
             ) : (
             <Redirect
@@ -23,6 +20,6 @@ const ProtectedRoute = observer(({ children,...rest }) => {
         }
         />
     );
-});
+};
 
 export default ProtectedRoute;
