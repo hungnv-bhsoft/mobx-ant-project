@@ -22,9 +22,9 @@ const Products = observer(() => {
             name : productStore.products[i].name,
             price : productStore.products[i].price + " $",
             cover : 'http://localhost:1337'+productStore.products[i].cover[0].formats.thumbnail.url,
-            description : productStore.products[i].description,
+            description : productStore.products[i].description || '',
             quantity : productStore.products[i].quantity,
-            status : productStore.products[i].status,
+            status : productStore.products[i].status || '',
             created_at : productStore.products[i].created_at,
             updated_at : productStore.products[i].updated_at
         });

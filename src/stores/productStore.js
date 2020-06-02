@@ -23,14 +23,14 @@ export class ProductStore {
     createProduct = async (product) => {
 
         const headers = {
-            'Content-Type': 'application/json',
+            'Content-Type': 'multipart/form-data',
             'Authorization': `Bearer ${getToken.jwt}`
         }
         try {
             this.loading = true;
             const res = await coffeeAPI.post('/products',product,{headers});
             this.products.push(product);
-            console.log(res.data);
+            console.log(res);
             this.loading = false;
         } catch (err) {
             console.log(err);
@@ -44,8 +44,10 @@ export class ProductStore {
         }
         try {
             this.loading = true;
-            const res = await coffeeAPI.post('http://localhost:1337/upload',fileList,{headers});
-            console.log(res.data);
+            const cover = new FormData();
+            cover.append('files',fileList);
+            const res = await coffeeAPI.post('http://localhost:1337/upload',cover,{headers});
+            console.log(res);
             this.loading = false;
         } catch (err) {
             console.log(err);

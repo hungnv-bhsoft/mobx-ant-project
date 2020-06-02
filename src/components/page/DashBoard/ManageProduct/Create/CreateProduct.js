@@ -5,6 +5,9 @@ import { Form, Input, InputNumber, Button , Upload} from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { observer } from 'mobx-react';
 import { useStores } from '../../../../../hooks/useStores';
+import UploadBasic from './UploadBasic';
+import axios from 'axios';
+import { toJS } from 'mobx';
 
 const layout = {
     labelCol: {
@@ -33,8 +36,9 @@ const H3 = styled.h3`
 `;
 
 const CreateProduct = observer(() => {
-    const { productStore } = useStores();
+    const { productStore , categoriesStore } = useStores();
     const [fileList,setFileList] = useState([]);
+
     const [jwt,setJwt] = useState(null);
     React.useEffect(() => {
         const getToken = JSON.parse(window.sessionStorage.getItem('admin')) || null;
@@ -44,6 +48,8 @@ const CreateProduct = observer(() => {
             setJwt(null);
         }
     },[]);
+
+    console.log(toJS(categoriesStore.getCategories()))
 
 
     const onChange = ({ fileList: newFileList }) => {
@@ -65,24 +71,33 @@ const CreateProduct = observer(() => {
     };
 
 
-    const onFinish = values => {
-        console.log(values);
-        console.log(fileList);
-
+    const onFinish = async values => {
+        // console.log(values);
+        // console.log(fileList);
+        const formData = new FormData();
         const newPro = {
             name : values.product.name,
             description : values.product.description,
             price : values.product.price,
             quantity : values.product.quantity,
-            status : values.product.status,
-            cover : fileList
+            status : values.product.status
         };
-        console.log(newPro);
-        productStore.createProduct(newPro);
+        formData.append('data',JSON.stringify(newPro));
+        if (fileList.length === 1) {
+            const sFile = fileList[0].originFileObj;
+            formData.append(`files.cover`,sFile,sFile.name);
+        } else {
+            for(let i = 0; i < fileList.length; i++ ) {
+                const mFile = fileList[i].originFileObj;
+                formData.append(`files.cover`, mFile,mFile.name);
+            }
+        }
+
+        productStore.createProduct(formData);
 
     };
-    console.log(jwt);
 
+    // console.log(signleFile);
     return (
         <Dashboard>
             <H3>Create new product</H3>
@@ -107,7 +122,10 @@ const CreateProduct = observer(() => {
                 label="Price"
                 rules={[
                 {
-                    required: true,
+                    type: 'number',
+                    min: 1,
+                    max: 99999999,
+                    required: true
                 },
                 ]}
             >
@@ -134,15 +152,11 @@ const CreateProduct = observer(() => {
             <Form.Item name={['product', 'description']} label="Description">
                 <Input.TextArea />
             </Form.Item>
-            <Form.Item name={['product', 'cover']} label="Cover">
+            <Form.Item label="Cover">
             <ImgCrop rotate>
                 <Upload
-                    action="//jsonplaceholder.typicode.com/posts/"
                     multiple={true}
-                    headers={{
-                        'Authorization': `Bearer ${jwt}`,
-                        'Content-Type': 'multipart/form-data'
-                    }}
+                    action="https://www.mocky.io/v2/5cc8019d300000980a055e76"
                     listType="picture-card"
                     fileList={fileList}
                     onChange={onChange}
@@ -150,7 +164,7 @@ const CreateProduct = observer(() => {
                 >
                     {fileList.length < 5 && '+ Upload'}
                 </Upload>
-                </ImgCrop>
+            </ImgCrop>
             </Form.Item>
             <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
                 <Button type="primary" htmlType="submit">
