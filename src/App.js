@@ -25,6 +25,7 @@ import AdminLogin from './components/page/AdminLogin';
 import ManageCategories from './components/page/DashBoard/ManageCategories';
 import ManageProduct from './components/page/DashBoard/ManageProduct';
 import CreateProduct from './components/page/DashBoard/ManageProduct/Create';
+import UpdateProduct from './components/page/DashBoard/ManageProduct/Update';
 import history from './utils/history';
 
 
@@ -64,6 +65,9 @@ const App = () => {
               </ProtectedRoute>
               <ProtectedRoute path="/createproduct">
                 <CreateProduct />
+              </ProtectedRoute>
+              <ProtectedRoute path="/editproduct/:pId">
+                <UpdateProduct />
               </ProtectedRoute>
               {/* Not page */}
               <Route path="*">
