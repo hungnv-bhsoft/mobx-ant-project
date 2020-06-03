@@ -11,8 +11,8 @@ export const headers = {
 export class ProductStore {
     loading = false;
     products = [];
-    success = false;
-    error = false;
+    success = null;
+    error = null;
 
     getProducts = async () => {
         try {

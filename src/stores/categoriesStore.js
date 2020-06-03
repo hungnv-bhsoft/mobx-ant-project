@@ -10,8 +10,8 @@ export const headers = {
 
 export class CategoriesStore {
     loading = false;
-    success = false;
-    error = false;
+    success = null;
+    error = null;
     categories = [];
 
     getCategories = async () => {
@@ -31,8 +31,10 @@ export class CategoriesStore {
             const res = await coffeeAPI.post('/categories',categorie,{headers});
             this.categories.push(categorie);
             console.log(res.data);
+            this.success = true;
             this.loading = false;
         } catch (err) {
+          this.error = true;
             console.log(err);
         }
     };
@@ -41,11 +43,14 @@ export class CategoriesStore {
             this.loading = true;
             const res = await coffeeAPI.put(`/categories/${cId}`,name,{headers});
             console.log(res.data);
+            console.log(cId);
             const indexObj = this.categories.findIndex( c => c.id === cId);//if true return 1;
-            // console.log(this.projects[indexObj] = obj);
-            this.projects[indexObj] = name;
+            // console.log(this.projects[indexObj] = name);
+            this.categories[indexObj] = name;
+            this.success = true;
             this.loading = false;
         } catch (err) {
+            this.error = true;
             console.log(err);
         }
     }
@@ -73,5 +78,6 @@ decorate(CategoriesStore,{
     categories : observable,
     getCategories : action,
     createCategorie : action,
+    editCategorie : action,
     deleteCategorie : action
 });
