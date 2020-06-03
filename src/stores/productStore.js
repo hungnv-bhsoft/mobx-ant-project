@@ -3,10 +3,16 @@ import coffeeAPI from '../api/config';
 
 const getToken = JSON.parse(window.sessionStorage.getItem('admin'));
 // console.log(getToken.jwt);
+export const headers = {
+  'Content-Type': 'multipart/form-data',
+  'Authorization': `Bearer ${getToken.jwt}`
+}
 
 export class ProductStore {
     loading = false;
     products = [];
+    success = false;
+    error = false;
 
     getProducts = async () => {
         try {
@@ -21,35 +27,40 @@ export class ProductStore {
     };
 
     createProduct = async (product) => {
-
-        const headers = {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${getToken.jwt}`
-        }
         try {
             this.loading = true;
-            const res = await coffeeAPI.post('/products',product,{headers});
+            await coffeeAPI.post('/products',product,{headers});
             this.products.push(product);
-            console.log(res);
+            this.success = true;
             this.loading = false;
         } catch (err) {
+          this.error = true;
             console.log(err);
         }
     }
-
-    uploadCover = async (fileList) => {
-        const headers = {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${getToken.jwt}`
+    deleteProduct = async (productId) => {
+          try {
+            this.loading = true;
+            await coffeeAPI.delete(`/products/${productId}`,{headers});
+            this.success = true;
+            this.products = this.products.filter(product => product.id !== productId);
+            this.loading = false;
+        } catch (err) {
+          this.error = true;
+            console.log(err);
         }
+    }
+    uploadCover = async (fileList) => {
+
         try {
             this.loading = true;
             const cover = new FormData();
             cover.append('files',fileList);
-            const res = await coffeeAPI.post('http://localhost:1337/upload',cover,{headers});
-            console.log(res);
+            await coffeeAPI.post('http://localhost:1337/upload',cover,{headers});
+            this.success = true;
             this.loading = false;
         } catch (err) {
+            this.error = true;
             console.log(err);
         }
     }
@@ -67,8 +78,11 @@ export class ProductStore {
 decorate(ProductStore,{
     loading : observable,
     products : observable,
+    success : observable,
+    error : observable,
     getProducts : action,
     createProduct : action,
+    deleteProduct : action,
     incPrice : action,
     convertVND : action
 });

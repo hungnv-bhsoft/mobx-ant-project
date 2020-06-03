@@ -1,13 +1,14 @@
 import React, { useState } from 'react';
 import Dashboard from '../../Dashboard';
 import styled from 'styled-components';
-import { Form, Input, InputNumber, Button , Upload} from 'antd';
+import { Form, Input, InputNumber, Button , Upload, Select , notification} from 'antd';
 import ImgCrop from 'antd-img-crop';
 import { observer } from 'mobx-react';
 import { useStores } from '../../../../../hooks/useStores';
-import UploadBasic from './UploadBasic';
-import axios from 'axios';
+
 import { toJS } from 'mobx';
+const { Option } = Select;
+
 
 const layout = {
     labelCol: {
@@ -28,6 +29,25 @@ const validateMessages = {
     },
 };
 
+//Notification
+const createTrue = () => {
+  notification.success({
+    message: 'Create Product Success',
+    duration : 2,
+    onClick: () => {
+      console.log('Notification Clicked!');
+    },
+  });
+};
+const createFalse = () => {
+  notification.warn({
+    message: 'Create Product Failed',
+    duration : 2,
+    onClick: () => {
+      console.log('Notification Clicked!');
+    },
+  });
+};
 
 
 const H3 = styled.h3`
@@ -37,20 +57,22 @@ const H3 = styled.h3`
 
 const CreateProduct = observer(() => {
     const { productStore , categoriesStore } = useStores();
-    const [fileList,setFileList] = useState([]);
-
-    const [jwt,setJwt] = useState(null);
     React.useEffect(() => {
-        const getToken = JSON.parse(window.sessionStorage.getItem('admin')) || null;
-        if (getToken) {
-            setJwt(getToken.jwt);
-        } else {
-            setJwt(null);
-        }
+      const getToken = JSON.parse(window.sessionStorage.getItem('admin')) || null;
+      if (getToken) {
+          setJwt(getToken.jwt);
+      } else {
+          setJwt(null);
+      };
+      categoriesStore.getCategories();
     },[]);
 
-    console.log(toJS(categoriesStore.getCategories()))
-
+    const categories = categoriesStore.categories;
+    //handle Field, files
+    const [form] = Form.useForm();
+    const [fileList,setFileList] = useState([]);
+    const [jwt,setJwt] = useState(null);
+    //Handle File
 
     const onChange = ({ fileList: newFileList }) => {
         setFileList(newFileList);
@@ -69,45 +91,70 @@ const CreateProduct = observer(() => {
         const imgWindow = window.open(src);
         imgWindow.document.write(image.outerHTML);
     };
-
+    //handle Selected
+    function handleChange(value) {
+        console.log(`selected ${value}`);
+    }
+    const onFinishFailed = errorInfo => {
+        console.log('Failed:', errorInfo);
+        if(errorInfo !== null) {
+          createFalse();
+        }
+    };
 
     const onFinish = async values => {
         // console.log(values);
         // console.log(fileList);
         const formData = new FormData();
-        const newPro = {
-            name : values.product.name,
-            description : values.product.description,
-            price : values.product.price,
-            quantity : values.product.quantity,
-            status : values.product.status
+        const newProduct = {
+            name: values.name,
+            description: values.description,
+            price : values.price,
+            categories : values.categories,
+            quantity : values.quantity,
+            status : values.status
         };
-        formData.append('data',JSON.stringify(newPro));
+
+        formData.append('data', JSON.stringify(newProduct));
         if (fileList.length === 1) {
             const sFile = fileList[0].originFileObj;
-            formData.append(`files.cover`,sFile,sFile.name);
+            formData.append(`files.cover`, sFile, sFile.name);
         } else {
             for(let i = 0; i < fileList.length; i++ ) {
                 const mFile = fileList[i].originFileObj;
-                formData.append(`files.cover`, mFile,mFile.name);
+                formData.append(`files.cover`, mFile, mFile.name);
             }
         }
 
         productStore.createProduct(formData);
+        //reset form after submit
+        setFileList([]);
+        form.resetFields();
+        createTrue();
 
     };
 
     // console.log(signleFile);
     return (
         <Dashboard>
+
             <H3>Create new product</H3>
             <Form
             {...layout}
-            name="nest-messages"
+            form={form}
+            name="product-form"
+            initialValues={{
+              name : '',
+              price : 0,
+              quantity : 0,
+              status : '',
+              description : ''
+            }}
             onFinish={onFinish}
+            onFinishFailed={onFinishFailed}
             validateMessages={validateMessages}>
             <Form.Item
-                name={['product', 'name']}
+                name="name"
                 label="Name"
                 rules={[
                 {
@@ -118,7 +165,27 @@ const CreateProduct = observer(() => {
                 <Input />
             </Form.Item>
             <Form.Item
-                name={['product', 'price']}
+                name="categories"
+                label="Categories"
+                rules={[
+                    {
+                        required: true,
+                    }
+                ]}
+            >
+            <Select
+                mode="multiple"
+                style={{ width: '100%' }}
+                placeholder="Please select categorie"
+                onChange={handleChange}
+            >
+                {categories !== undefined && categories.map( cate => (
+                    <Option key={cate.id}>{cate.name}</Option>
+                ))}
+            </Select>
+            </Form.Item>
+            <Form.Item
+                name="price"
                 label="Price"
                 rules={[
                 {
@@ -133,7 +200,7 @@ const CreateProduct = observer(() => {
             </Form.Item>
 
             <Form.Item
-                name={['product', 'quantity']}
+                name="quantity"
                 label="Quantity"
                 rules={[
                 {
@@ -146,10 +213,20 @@ const CreateProduct = observer(() => {
             >
                 <InputNumber />
             </Form.Item>
-            <Form.Item name={['product', 'status']} label="Status">
+            <Form.Item name="status" label="Status">
                 <Input />
             </Form.Item>
-            <Form.Item name={['product', 'description']} label="Description">
+            <Form.Item
+                name="description"
+                label="Description"
+                rules={[
+                    {
+                        required: true,
+                        min: 30,
+                        max : 5000
+                    }
+                ]}
+            >
                 <Input.TextArea />
             </Form.Item>
             <Form.Item label="Cover">

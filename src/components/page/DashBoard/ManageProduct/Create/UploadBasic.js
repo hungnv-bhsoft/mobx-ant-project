@@ -45,7 +45,10 @@ const UploadBasic = () => {
         }
     }
     return (
-        <FormStyle onSubmit={handleSubmit} className="form">
+        <FormStyle
+          onSubmit={handleSubmit}
+          className="form"
+        >
             <h3 style={{ textAlign : 'center'}}>Test</h3>
             <Input type="text" name="title" onChange={handleText}/>
             <Input type="file" name="cover" onChange={handleFile} />
