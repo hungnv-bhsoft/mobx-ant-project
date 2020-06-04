@@ -1,12 +1,6 @@
 import { observable, computed ,decorate, action, toJS } from 'mobx';
 import coffeeAPI from '../api/config';
-
-const getToken = JSON.parse(window.sessionStorage.getItem('admin'));
-// console.log(getToken.jwt);
-export const headers = {
-  'Content-Type': 'multipart/form-data',
-  'Authorization': `Bearer ${getToken.jwt}`
-}
+import { headers } from '../utils/header';
 
 export class ProductStore {
     loading = false;
@@ -38,6 +32,21 @@ export class ProductStore {
             console.log(err);
         }
     };
+    editProduct = async (productId,product) => {
+        try {
+          this.loading = true;
+          const res = await coffeeAPI.put(`/products/${productId}`,product,{headers});
+          // const indexObj = this.products.findIndex( pro => pro.id === productId);//if true return 1;
+          // // console.log(this.projects[indexObj] = obj);
+          // this.products[indexObj] = product;
+          console.log(res);
+          this.success = true;
+          this.loading = false;
+        } catch (err) {
+          this.error = true;
+            console.log(err);
+        }
+    }
     deleteProduct = async (productId) => {
           try {
             this.loading = true;
@@ -50,21 +59,6 @@ export class ProductStore {
             console.log(err);
         }
     };
-    eidtProduct = async (productId,product) => {
-        try {
-          this.loading = true;
-          const res = await coffeeAPI.put(`/products/${productId}`,product,{headers});
-          const indexObj = this.products.findIndex( pro => pro.id === productId);//if true return 1;
-          // console.log(this.projects[indexObj] = obj);
-          this.products[indexObj] = product;
-          console.log(res);
-          this.success = true;
-          this.loading = false;
-      } catch (err) {
-        this.error = true;
-          console.log(err);
-      }
-    }
     uploadCover = async (fileList) => {
 
         try {
@@ -98,7 +92,7 @@ decorate(ProductStore,{
     getProducts : action,
     createProduct : action,
     deleteProduct : action,
-    eidtProduct : action,
+    editProduct : action,
     incPrice : action,
     convertVND : action
 });

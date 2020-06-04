@@ -1,12 +1,6 @@
 import { observable, decorate, action } from 'mobx';
 import coffeeAPI from '../api/config';
-
-const getToken = JSON.parse(window.sessionStorage.getItem('admin')) || null;
-// console.log(getToken.jwt);
-
-export const headers = {
-  'Authorization': `Bearer ${getToken.jwt}`
-}
+import { headers } from '../utils/header';
 
 export class CategoriesStore {
     loading = false;

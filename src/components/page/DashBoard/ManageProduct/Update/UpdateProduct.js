@@ -67,13 +67,23 @@ const UpdateProduct = observer(() => {
     const products = toJS(productStore.products);
     const pro = products.length > 0 && products.filter( pro => pro.id === pId)[0];
     const defaultCate = [];
+    const defaultImg = [];
     pro.categories !== undefined && pro.categories.map( cat => defaultCate.push(cat.name) );
+    // pro.cover !== undefined && pro.cover.map( ({id,name,url}) => setFileList({
+    //   uid : id,
+    //   name,
+    //   status: 'done',
+    //   url : `http://localhost:1337/${url}`
+    // }));
+    console.log(defaultImg);
      //fileList antd
     const [fileList,setFileList] = useState([]);
     React.useEffect(() => {
       productStore.getProducts();
       categoriesStore.getCategories();
     },[]);
+
+    console.log(fileList);
     React.useEffect(() => {
       form.setFieldsValue({
           name : pro.name,
@@ -136,12 +146,16 @@ const UpdateProduct = observer(() => {
                 const mFile = fileList[i].originFileObj;
                 formData.append(`files.cover`, mFile, mFile.name);
             }
-        }
+        };
 
-        // console.log(newProduct);
 
-        // productStore.eidtProduct(pro.id,formData);
-        //reset form after submit
+      // productStore.editProduct(pId,formData);
+        // reset form after submit
+
+      for(let pair of formData.entries() ){
+          console.log(pair);
+      }
+
         setFileList([]);
         form.resetFields();
         editTrue();
