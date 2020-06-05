@@ -1,7 +1,8 @@
 import { observable, computed ,decorate, action, toJS } from 'mobx';
 import coffeeAPI from '../api/config';
-import { headers } from '../utils/header';
 
+import { headers } from '../utils/header';
+// console.log(headers);
 export class ProductStore {
     loading = false;
     products = [];
@@ -32,23 +33,24 @@ export class ProductStore {
             console.log(err);
         }
     };
-    editProduct = async (productId,product) => {
+    editProduct = async (pId, product) => {
         try {
-          this.loading = true;
-          const res = await coffeeAPI.put(`/products/${productId}`,product,{headers});
-          // const indexObj = this.products.findIndex( pro => pro.id === productId);//if true return 1;
-          // // console.log(this.projects[indexObj] = obj);
-          // this.products[indexObj] = product;
-          console.log(res);
-          this.success = true;
-          this.loading = false;
+            this.loading = true;
+            const res = await coffeeAPI.put(`/products/${pId}`,product,{headers});
+            const indexObj = this.products.findIndex( p => p.id === pId);//if true return 1;
+            // console.log(this.projects[indexObj] = product);
+            this.products[indexObj] = product;
+            console.log(res);
+            this.success = true;
+            this.loading = false;
         } catch (err) {
-          this.error = true;
+            this.error = true;
             console.log(err);
         }
-    }
+    };
+
     deleteProduct = async (productId) => {
-          try {
+        try {
             this.loading = true;
             await coffeeAPI.delete(`/products/${productId}`,{headers});
             this.success = true;
@@ -79,9 +81,6 @@ export class ProductStore {
         return product.price++;
         // console.log(id);
     };
-    convertVND = (currency) => {
-        return this.products.map( pro => pro.price  * currency );
-    };
 
 }
 decorate(ProductStore,{
@@ -93,6 +92,5 @@ decorate(ProductStore,{
     createProduct : action,
     deleteProduct : action,
     editProduct : action,
-    incPrice : action,
-    convertVND : action
+    incPrice : action
 });

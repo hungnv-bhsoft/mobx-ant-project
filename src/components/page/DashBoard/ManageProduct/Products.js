@@ -35,13 +35,14 @@ const Products = observer(() => {
             created_at,
             updated_at
         } = productStore.products[i];
-        // console.log(toJS(cover[0].formats.thumbnail.url));
+        // console.log(toJS(cover));
+        const coverUrl = !cover ? '/uploads/thumbnail_img_placeholder_ff16fdc090.jpeg' : cover[0].formats.thumbnail.url;
         data.push({
             key: i,
             id,
             name,
             price: price + ' $',
-            cover : 'http://localhost:1337'+cover[0].formats.thumbnail.url || null,
+            cover : 'http://localhost:1337'+coverUrl,
             description,
             categories,
             quantity,
@@ -57,7 +58,7 @@ const Products = observer(() => {
     return (
         <Dashboard>
 
-            <Table dataSource={data} scroll={{ x: 1500, y: 600 }}>
+            <Table dataSource={data} scroll={{ x: 1300, y: 600 }}>
                 <Column title="Name" dataIndex="name" key="name" fixed="left"/>
                 <Column title="Price" dataIndex="price" key="price" />
                 <Column title="Status" dataIndex="status" key="status" />
@@ -68,7 +69,7 @@ const Products = observer(() => {
                 key="categories"
                 render={ categories => (
                   <List flexDirection="column">
-                    {categories.map( categorie => (
+                    { categories !== undefined && categories.map( categorie => (
                     <Item key={categorie.id}>
                       {categorie.name}
                     </Item>

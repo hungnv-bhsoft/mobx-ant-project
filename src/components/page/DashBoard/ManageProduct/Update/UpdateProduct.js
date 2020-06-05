@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams, useHistory } from 'react-router-dom';
+import { useParams, useHistory, Link } from 'react-router-dom';
 import Dashboard from '../../Dashboard';
 import styled from 'styled-components';
 import { Form, Input, InputNumber, Button , Upload, Select , notification} from 'antd';
@@ -58,46 +58,45 @@ const H3 = styled.h3`
 
 const UpdateProduct = observer(() => {
     let { pId } = useParams();
-    const history = useHistory();
+    // const history = useHistory();
     const { productStore , categoriesStore } = useStores();
     //form hooks antd
     const [form] = Form.useForm();
-
-    const categories = categoriesStore.categories;
-    const products = toJS(productStore.products);
-    const pro = products.length > 0 && products.filter( pro => pro.id === pId)[0];
-    const defaultCate = [];
-    const defaultImg = [];
-    pro.categories !== undefined && pro.categories.map( cat => defaultCate.push(cat.name) );
-    // pro.cover !== undefined && pro.cover.map( ({id,name,url}) => setFileList({
-    //   uid : id,
-    //   name,
-    //   status: 'done',
-    //   url : `http://localhost:1337/${url}`
-    // }));
-    console.log(defaultImg);
      //fileList antd
     const [fileList,setFileList] = useState([]);
+
+    const categories = categoriesStore.categories;
+    const products = productStore.products;
+    // console.log(toJS(products));
+    //filter list array product if id === id in a  product => return obj of project
+    const pro = products.length > 0 && products.filter( pro => pro.id === pId)[0];
+    // const cateDefault = [];
+
+
     React.useEffect(() => {
       productStore.getProducts();
       categoriesStore.getCategories();
-    },[]);
 
-    console.log(fileList);
+    },[]);
     React.useEffect(() => {
+      const getCateField = form.getFieldValue('categories');
+      const cateDefault = pro.categories !== undefined ? pro.categories.map( cate => cate.id ) : [];
+      // console.log(toJS(imgDefault));
+      // console.log(getCateField);
       form.setFieldsValue({
           name : pro.name,
           price : pro.price,
-          categories : defaultCate,
+          categories : getCateField !== undefined ? getCateField : cateDefault,
           quantity : pro.quantity,
           status : pro.status,
           description : pro.description
       });
-    });
+    },[]);
 
-    //handle files
-    const onChange = ({ fileList: newFileList }) => {
-        setFileList(newFileList);
+    //=============handle upload
+
+    const onChange = ({ fileList : newFileList }) => {
+      setFileList(newFileList);
     };
     const onPreview = async file => {
         let src = file.url;
@@ -112,6 +111,7 @@ const UpdateProduct = observer(() => {
         image.src = src;
         const imgWindow = window.open(src);
         imgWindow.document.write(image.outerHTML);
+
     };
     //handle Selected
     function handleChange(value) {
@@ -124,44 +124,43 @@ const UpdateProduct = observer(() => {
         }
     };
 
-    const onFinish = async values => {
-        // console.log(values);
-        // console.log(fileList);
+    const onFinish = values => {
+        console.log(values);
+        const {
+          name,
+          price,
+          categories,
+          quantity,
+          status,
+          description
+        } = values;
+        const editProduct =  {
+            name,
+            price,
+            quantity,
+            categories,
+            status,
+            description
+        }
+        // console.log(newProduct);
         const formData = new FormData();
-        const newProduct = {
-            name: values.name,
-            description: values.description,
-            price : values.price,
-            categories : values.categories,
-            quantity : values.quantity,
-            status : values.status
-        };
-
-        formData.append('data', JSON.stringify(newProduct));
+        formData.append('data',JSON.stringify(editProduct));
         if (fileList.length === 1) {
-            const sFile = fileList[0].originFileObj;
-            formData.append(`files.cover`, sFile, sFile.name);
+          const sFile = fileList[0].originFileObj;
+          formData.append(`files.cover`, sFile, sFile.name);
         } else {
             for(let i = 0; i < fileList.length; i++ ) {
                 const mFile = fileList[i].originFileObj;
                 formData.append(`files.cover`, mFile, mFile.name);
             }
-        };
-
-
-      // productStore.editProduct(pId,formData);
-        // reset form after submit
-
-      for(let pair of formData.entries() ){
-          console.log(pair);
-      }
-
-        setFileList([]);
-        form.resetFields();
+        }
+        console.log(fileList);
+        // const getCateField = form.getFieldValue('categories');
+        productStore.editProduct(pId,formData);
         editTrue();
 
+
     };
-    // console.log(signleFile);
     return (
         <Dashboard>
 
@@ -169,9 +168,6 @@ const UpdateProduct = observer(() => {
             <Form
             {...layout}
             form={form}
-            // initialValues={{
-            //   categories: defaultCate
-            // }}
             name="product-form"
             onFinish={onFinish}
             onFinishFailed={onFinishFailed}
@@ -203,7 +199,7 @@ const UpdateProduct = observer(() => {
                 onChange={handleChange}
             >
                 {categories !== undefined && categories.map( cate => (
-                    <Option key={cate.id} value={cate.name}>{cate.name}</Option>
+                    <Option key={cate.id} value={cate.id}>{cate.name}</Option>
                 ))}
             </Select>
             </Form.Item>
@@ -266,9 +262,12 @@ const UpdateProduct = observer(() => {
                 </Upload>
             </ImgCrop>
             </Form.Item>
-            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 8 }}>
+            <Form.Item wrapperCol={{ ...layout.wrapperCol, offset: 4 }}>
                 <Button type="primary" htmlType="submit">
                     Submit
+                </Button>
+                <Button type="dashed">
+                  <Link to="/getproducts">Back</Link>
                 </Button>
             </Form.Item>
 

@@ -58,12 +58,6 @@ const H3 = styled.h3`
 const CreateProduct = observer(() => {
     const { productStore , categoriesStore } = useStores();
     React.useEffect(() => {
-      const getToken = JSON.parse(window.sessionStorage.getItem('admin')) || null;
-      if (getToken) {
-          setJwt(getToken.jwt);
-      } else {
-          setJwt(null);
-      };
       categoriesStore.getCategories();
     },[]);
 
@@ -71,7 +65,6 @@ const CreateProduct = observer(() => {
     //handle Field, files
     const [form] = Form.useForm();
     const [fileList,setFileList] = useState([]);
-    const [jwt,setJwt] = useState(null);
     //Handle File
 
     const onChange = ({ fileList: newFileList }) => {
@@ -102,7 +95,7 @@ const CreateProduct = observer(() => {
         }
     };
 
-    const onFinish = async values => {
+    const onFinish = values => {
         // console.log(values);
         // console.log(fileList);
         const formData = new FormData();
@@ -125,12 +118,13 @@ const CreateProduct = observer(() => {
                 formData.append(`files.cover`, mFile, mFile.name);
             }
         }
-
+        // console.log(newProduct);
         productStore.createProduct(formData);
         //reset form after submit
         setFileList([]);
         form.resetFields();
         createTrue();
+
 
     };
 

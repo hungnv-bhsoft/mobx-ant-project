@@ -41,9 +41,9 @@ const DashBoard = observer(({ children }) =>  {
         }
     },[]);
 
-    const toggleCollapsed = () => {
-        setCollapsed(!collapsed);
-    }
+    // const toggleCollapsed = () => {
+    //     setCollapsed(!collapsed);
+    // }
 
     return (
         <DashboardWrapper>
@@ -94,26 +94,6 @@ const DashBoard = observer(({ children }) =>  {
                             <Menu.Item key="7">Option 6</Menu.Item>
                             <Menu.Item key="8">Option 7</Menu.Item>
                             <Menu.Item key="9">Option 8</Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="sub3" icon={<MailOutlined />} title="Deep 3">
-                                <Menu.Item key="10">Option 5</Menu.Item>
-                                <Menu.Item key="11">Option 6</Menu.Item>
-                                <Menu.Item key="12">Option 7</Menu.Item>
-                                <Menu.Item key="13">Option 8</Menu.Item>
-                                <Menu.Item key="14">Option 9</Menu.Item>
-                                <Menu.Item key="15">Option 10</Menu.Item>
-                                <Menu.Item key="16">Option 11</Menu.Item>
-                                <Menu.Item key="17">Option 12</Menu.Item>
-                        </SubMenu>
-                        <SubMenu key="sub4" icon={<MailOutlined />} title="Deep 4">
-                                <Menu.Item key="18">Option 13</Menu.Item>
-                                <Menu.Item key="19">Option 14</Menu.Item>
-                                <Menu.Item key="20">Option 15</Menu.Item>
-                                <Menu.Item key="21">Option 16</Menu.Item>
-                                <Menu.Item key="22">Option 17</Menu.Item>
-                                <Menu.Item key="23">Option 18</Menu.Item>
-                                <Menu.Item key="24">Option 19</Menu.Item>
-                                <Menu.Item key="26">Option 20</Menu.Item>
                         </SubMenu>
                     </Menu>
                 </AsideWrapper>
