@@ -36,7 +36,7 @@ const Products = observer(() => {
             updated_at
         } = productStore.products[i];
         // console.log(toJS(cover));
-        const coverUrl = !cover ? '/uploads/thumbnail_img_placeholder_ff16fdc090.jpeg' : cover[0].formats.thumbnail.url;
+        const coverUrl = (cover !== undefined ) ? cover[0].formats.thumbnail.url : '/uploads/thumbnail_img_placeholder_ff16fdc090.jpeg';
         data.push({
             key: i,
             id,
